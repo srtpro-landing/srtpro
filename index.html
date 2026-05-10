@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SRT PRO | Suite de Automação para Creators</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(255, 196, 0, 0.16), transparent 35%),
+        radial-gradient(circle at top right, rgba(255, 255, 255, 0.08), transparent 30%),
+        linear-gradient(135deg, #070707 0%, #121212 45%, #050505 100%);
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    .page {
+      width: 100%;
+      min-height: 100vh;
+      padding: 28px 24px 60px;
+    }
+
+    .navbar {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.035);
+      backdrop-filter: blur(18px);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #ffd54a, #ff9d00);
+      color: #111;
+      font-size: 22px;
+      box-shadow: 0 0 28px rgba(255, 190, 0, 0.35);
+    }
+
+    .nav-badge {
+      font-size: 13px;
+      color: #ffd76a;
+      border: 1px solid rgba(255, 215, 106, 0.28);
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: rgba(255, 200, 0, 0.08);
+    }
+
+    .hero {
+      max-width: 1180px;
+      margin: 70px auto 0;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 42px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffd76a;
+      background: rgba(255, 200, 0, 0.08);
+      border: 1px solid rgba(255, 215, 106, 0.24);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 6vw, 74px);
+      line-height: 0.95;
+      letter-spacing: -3px;
+      margin-bottom: 24px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #ffffff, #ffd76a 55%, #ffb300);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      font-size: 20px;
+      line-height: 1.55;
+      color: #cfcfcf;
+      max-width: 650px;
+      margin-bottom: 32px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .btn {
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      border-radius: 16px;
+      font-weight: 900;
+      letter-spacing: 0.2px;
+      transition: 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-primary {
+      padding: 17px 26px;
+      color: #111;
+      background: linear-gradient(135deg, #ffe27a, #ffb000);
+      box-shadow: 0 18px 45px rgba(255, 176, 0, 0.26);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 22px 55px rgba(255, 176, 0, 0.38);
+    }
+
+    .btn-secondary {
+      padding: 16px 23px;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .trust {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      color: #a8a8a8;
+      font-size: 14px;
+    }
+
+    .trust span {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .dashboard-preview {
+      position: relative;
+      padding: 18px;
+      border-radius: 30px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.035));
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+    }
+
+    .dashboard-preview::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(135deg, rgba(255, 208, 70, 0.55), transparent 45%, rgba(255,255,255,0.08));
+      border-radius: 31px;
+      z-index: -1;
+      filter: blur(12px);
+      opacity: 0.65;
+    }
+
+    .app-window {
+      border-radius: 22px;
+      overflow: hidden;
+      background: #141414;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .app-topbar {
+      display: flex;
+      gap: 7px;
+      padding: 14px;
+      background: #1c1c1f;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: #555;
+    }
+
+    .app-body {
+      padding: 22px;
+    }
+
+    .app-title {
+      font-size: 25px;
+      font-weight: 900;
+      margin-bottom: 18px;
+    }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 13px;
+    }
+
+    .tool-card {
+      padding: 15px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .tool-card SRTong {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+
+    .tool-card small {
+      color: #aaa;
+      font-size: 12px;
+    }
+
+    .section {
+      max-width: 1180px;
+      margin: 86px auto 0;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 34px;
+    }
+
+    .section-header h2 {
+      font-size: clamp(30px, 4vw, 48px);
+      letter-spacing: -1.7px;
+      margin-bottom: 12px;
+    }
+
+    .section-header p {
+      color: #bdbdbd;
+      font-size: 18px;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .feature {
+      min-height: 150px;
+      padding: 22px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .feature-icon {
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+
+    .feature h3 {
+      font-size: 17px;
+      margin-bottom: 8px;
+    }
+
+    .feature p {
+      color: #aaa;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .pricing-wrap {
+      display: flex;
+      justify-content: center;
+    }
+
+    .pricing-card {
+      width: min(100%, 540px);
+      padding: 32px;
+      border-radius: 32px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.115), rgba(255,255,255,0.04));
+      border: 1px solid rgba(255, 214, 90, 0.35);
+      box-shadow: 0 30px 90px rgba(255, 176, 0, 0.13), 0 30px 80px rgba(0,0,0,0.55);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pricing-card::before {
+      content: "";
+      position: absolute;
+      top: -120px;
+      right: -120px;
+      width: 250px;
+      height: 250px;
+      background: rgba(255, 195, 0, 0.18);
+      border-radius: 50%;
+      filter: blur(25px);
+    }
+
+    .popular {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 199, 0, 0.16);
+      border: 1px solid rgba(255, 214, 90, 0.3);
+      color: #ffd76a;
+      font-weight: 900;
+      font-size: 12px;
+      margin-bottom: 18px;
+    }
+
+    .plan-name {
+      font-size: 31px;
+      font-weight: 950;
+      margin-bottom: 8px;
+    }
+
+    .price {
+      display: flex;
+      align-items: end;
+      gap: 8px;
+      margin: 22px 0;
+    }
+
+    .price SRTong {
+      font-size: 58px;
+      letter-spacing: -2px;
+    }
+
+    .price span {
+      color: #bdbdbd;
+      padding-bottom: 10px;
+    }
+
+    .benefits {
+      display: grid;
+      gap: 13px;
+      margin: 24px 0 28px;
+      color: #e8e8e8;
+    }
+
+    .benefits div {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .pricing-card .btn-primary {
+      width: 100%;
+      font-size: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .payment-note {
+      text-align: center;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    .guarantee {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #cfcfcf;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .faq {
+      display: grid;
+      gap: 14px;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      padding: 22px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-item h3 {
+      margin-bottom: 8px;
+      font-size: 18px;
+    }
+
+    .faq-item p {
+      color: #aaa;
+      line-height: 1.5;
+    }
+
+    .footer {
+      max-width: 1180px;
+      margin: 70px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      color: #888;
+      font-size: 14px;
+    }
+
+    @media (max-width: 920px) {
+      .hero {
+        grid-template-columns: 1fr;
+        margin-top: 44px;
+      }
+
+      .features {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        padding: 18px 14px 44px;
+      }
+
+      .navbar {
+        padding: 14px;
+      }
+
+      .nav-badge {
+        display: none;
+      }
+
+      h1 {
+        letter-spacing: -1.8px;
+      }
+
+      .subtitle {
+        font-size: 17px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .tool-grid, .features {
+        grid-template-columns: 1fr;
+      }
+
+      .pricing-card {
+        padding: 24px;
+      }
+
+      .price SRTong {
+        font-size: 48px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="navbar">
+      <div class="logo">
+        <div class="logo-icon">⚡</div>
+        <span>SRT PRO</span>
+      </div>
+      <div class="nav-badge">Licença mensal • Atualizações inclusas</div>
+    </nav>
+
+    <section class="hero">
+      <div>
+        <div class="eyebrow">⚡ Suite profissional para creators</div>
+        <h1>Automatize seu fluxo de conteúdo com o <span class="gradient-text">SRT PRO</span></h1>
+        <p class="subtitle">
+          7 ferramentas em um único sistema para acelerar criação, edição, legendas,
+          download de imagens, análise de canal e automações para vídeos curtos.
+        </p>
+
+        <div class="hero-actions">
+          <a href="https://pay.kiwify.com.br/SEU-LINK-AQUI" class="btn btn-primary">LIBERAR ACESSO PRO →</a>
+          <a href="#recursos" class="btn btn-secondary">Ver ferramentas</a>
+        </div>
+
+        <div class="trust">
+          <span>✅ Pagamento seguro via Kiwify</span>
+          <span>✅ Garantia de 7 dias</span>
+          <span>✅ Atualizações futuras</span>
+        </div>
+      </div>
+
+      <div class="dashboard-preview">
+        <div class="app-window">
+          <div class="app-topbar">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+          <div class="app-body">
+            <div class="app-title">Bem-vindo ao Ferramentas SRT</div>
+            <div class="tool-grid">
+              <div class="tool-card"><SRTong>📊 Analisar Canal</SRTong><small>ESRTatégia de títulos</small></div>
+              <div class="tool-card"><SRTong>🖼️ Baixar Imagens</SRTong><small>Download automático</small></div>
+              <div class="tool-card"><SRTong>✂️ Cortar Áudio e Vídeo</SRTong><small>Cortes de mídia</small></div>
+              <div class="tool-card"><SRTong>🎬 Gerador SRT</SRTong><small>Gerador de legendas</small></div>
+              <div class="tool-card"><SRTong>🔀 Misturador Imagens</SRTong><small>Embaralhar imagens</small></div>
+              <div class="tool-card"><SRTong>🔇 Remover Silêncio SRT</SRTong><small>Áudio no CapCut</small></div>
+              <div class="tool-card"><SRTong>🔁 Sincronizador SRT</SRTong><small>Automação de legendas</small></div>
+              <div class="tool-card"><SRTong>🚀 Atualização Automatica</SRTong><small>Novas funções e melhorias futuras</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="recursos">
+      <div class="section-header">
+        <h2>7 ferramentas para acelerar sua produção</h2>
+        <p>Menos tarefas manuais. Mais velocidade para criar e publicar.</p>
+      </div>
+
+      <div class="features">
+        <div class="feature"><div class="feature-icon">📊</div><h3>Análise de Canal</h3><p>Ajuda na eSRTatégia de títulos e organização para conteúdo.</p></div>
+        <div class="feature"><div class="feature-icon">🖼️</div><h3>Download Automático</h3><p>Baixe imagens ILIMITADAS para seu fluxo de produção com mais agilidade.</p></div>
+        <div class="feature"><div class="feature-icon">✂️</div><h3>Cortes de Mídia</h3><p>Ferramentas para áudio e vídeo dentro do seu processo criativo.</p></div>
+        <div class="feature"><div class="feature-icon">🎬</div><h3>Gerador SRT</h3><p>Crie legendas para seus vídeos de forma mais prática.</p></div>
+        <div class="feature"><div class="feature-icon">🔀</div><h3>Misturador</h3><p>Embaralhe imagens e monte variações com rapidez.</p></div>
+        <div class="feature"><div class="feature-icon">🔇</div><h3>Remover Silêncio SRT</h3><p>Automação voltada para melhorar o fluxo com CapCut.</p></div>
+        <div class="feature"><div class="feature-icon">🔁</div><h3>Sincronizador SRT</h3><p>Automação para organizar e sincronizar legendas.</p></div>
+        <div class="feature"><div class="feature-icon">⚡</div><h3>Atualizações</h3><p>Novas melhorias e funções adicionadas ao sistema.</p></div>
+      </div>
+    </section>
+
+    <section class="section" id="preco">
+      <div class="section-header">
+        <h2>Licença PRO mensal</h2>
+        <p>Acesso completo à suite SRT PRO com atualizações inclusas.</p>
+      </div>
+
+      <div class="pricing-wrap">
+        <div class="pricing-card">
+          <span class="popular">MAIS ESCOLHIDO</span>
+          <div class="plan-name">SRT PRO</div>
+          <p style="color:#bdbdbd; line-height:1.5;">Suite completa de automação para creators, editores e produtores de conteúdo.</p>
+
+          <div class="price">
+            <SRTong>R$77</SRTong>
+            <span>/ mês</span>
+          </div>
+
+          <div class="benefits">
+            <div>✅ Todas as 7 ferramentas liberadas</div>
+            <div>✅ Atualizações futuras inclusas</div>
+            <div>✅ Licença mensal recorrente</div>
+            <div>✅ Sistema profissional para creators</div>
+            <div>✅ Suporte e melhorias constantes</div>
+          </div>
+
+          <a href="https://pay.kiwify.com.br/SEU-LINK-AQUI" class="btn btn-primary">ATIVAR LICENÇA AGORA</a>
+          <div class="payment-note">Pagamento seguro via Kiwify • Pix e Cartão</div>
+
+          <div class="guarantee">
+            <SRTong>Garantia de 7 dias:</SRTong> teste o SRT PRO com segurança. Se não for para você, solicite reembolso dentro do prazo da garantia.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Dúvidas frequentes</h2>
+        <p>Informações importantes antes de ativar sua licença.</p>
+      </div>
+
+      <div class="faq">
+        <div class="faq-item">
+          <h3>O acesso é mensal?</h3>
+          <p>Sim. A licença é recorrente mensal e permanece ativa enquanto a assinatura estiver em dia.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Recebo atualizações?</h3>
+          <p>Sim. Atualizações e melhorias futuras estão inclusas para usuários com licença ativa.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Como recebo o programa?</h3>
+          <p>Após o pagamento na Kiwify, você recebe as inSRTuções de acesso, instalação e ativação da licença.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Funciona no Windows?</h3>
+          <p>Sim. O SRT PRO foi desenvolvido para Windows.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div>© 2026 SRT PRO. Todos os direitos reservados.</div>
+      <div>Suite de automação para creators.</div>
+    </footer>
+  </main>
+</body>
+</html>
